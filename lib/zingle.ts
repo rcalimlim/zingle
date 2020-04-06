@@ -4,7 +4,8 @@ const DEFAULT = {
   PASSWORD: '',
   HOST: 'api.zingle.me',
   PORT: '443',
-  BASE_PATH: '/v1/'
+  BASE_PATH: '/v1/',
+  SERVICE_ID: ''
 }
 
 // Zingle instance config object
@@ -14,17 +15,22 @@ export interface ZingleConfig {
   host?: string;
   port?: string;
   basePath?: string;
+  defaultServiceId?: string;
 }
 
 // Zingle instance config enum
-export const ZingleConfigEnum: string[] = ['username', 'password', 'host', 'port', 'basePath']
+export const ZingleConfigEnum: string[] = ['username', 'password', 'host', 'port', 'basePath', 'defaultServiceId']
 
 /**
  * Main Zingle API entrypoint for app. Configure connection settings and
  * override defaults when creating a new instance.
  *
- * @constructor
- *
+ * @param config.username {string}: Zingle username
+ * @param config.password {string}: Zingle password
+ * @param config.host {string}: Zingle API URL
+ * @param config.port {string}: port to connect to Zingle API
+ * @param config.basePath {string}: base path on top of host URL
+ * @param config.defaultServiceId {string}: service id from which to interact with when non is specified
  */
 export class Zingle {
   constructor (config: ZingleConfig) {
@@ -37,8 +43,6 @@ export class Zingle {
   /**
    * Validates supplied config object by throwing an error when passed an
    * invalid config.
-   *
-   * @param config {object}: config options for this Zingle instance
    */
   private validateConfig (config: ZingleConfig): ZingleConfig {
     // throw immediately if config is missing or not an object
@@ -74,9 +78,17 @@ export class Zingle {
       host: DEFAULT.HOST,
       port: DEFAULT.PORT,
       basePath: DEFAULT.BASE_PATH,
+      defaultServiceId: DEFAULT.SERVICE_ID,
       ...config
     }
 
     return cleanConfig
+  }
+
+  /**
+   * Adds and instantiates all resources onto Zingle object
+   */
+  private instantiateResources (): void {
+    //
   }
 }

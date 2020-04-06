@@ -45,7 +45,8 @@ describe('Zingle class', () => {
         password: 'password1234',
         host: 'api.fakesite.com',
         port: '123',
-        basePath: '/v2/'
+        basePath: '/v2/',
+        defaultServiceId: ''
       }
       expect(validateConfigFn(goodConfig)).to.deep.equal(goodConfig)
     })
