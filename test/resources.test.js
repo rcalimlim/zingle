@@ -9,5 +9,6 @@ describe('Resource list', () => {
 
     expect(services).to.be.an.instanceof(ServicesClass)
     expect(services.path).to.exist.and.to.equal('services')
+    expect(services.list).to.exist.and.to.be.a('function')
   })
 })

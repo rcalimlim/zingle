@@ -4,10 +4,8 @@ import { ZingleResource } from '../ZingleResource'
 export default class Services extends ZingleResource {
   constructor (zingle: Zingle) {
     super(zingle)
-    // TODO: replace
-    console.log('working')
+    this.path = 'services'
+    this.commonMethods = ['list', 'retrieve']
+    this.attachCommonMethods()
   }
-
-  path = 'services'
-  commonMethods = ['list', 'retrieve']
 }

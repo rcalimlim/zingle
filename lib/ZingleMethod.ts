@@ -1,23 +1,28 @@
-import { Hash } from './Utils'
+/**
+ * Resource method factory.
+ *
+ * @param spec
+ */
+export function createZingleMethod (spec: ZingleMethodSpec): Function {
+  return function (...args: any[]): Promise<any> {
+    const callback = typeof args[args.length - 1] === 'function' && args.pop()
 
-export class ZingleMethod {
-  constructor (
-    spec: ZingleMethodSpec,
-    optionalUrlParams: Hash,
-    callback: Function|null = null
-  ) {
-    this.spec = spec
-    this.callback = callback
+    // TODO: fix and actually return good stuff, for now just Promise
+    return new Promise((resolve, reject) => {
+      if (callback) {
+        resolve(true)
+      } else {
+        reject(new Error())
+      }
+    })
   }
-
-  private spec: ZingleMethodSpec
-  private callback: Function|null
 }
 
 export interface ZingleMethodSpec {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
-  path: string;
-  urlParams: string[];
-  encode: Function;
-  host: string;
+  methodType?: 'list';
+  path?: string;
+  urlParams?: string[];
+  encode?: Function;
+  host?: string;
 }
