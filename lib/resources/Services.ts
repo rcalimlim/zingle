@@ -7,4 +7,7 @@ export default class Services extends ZingleResource {
     // TODO: replace
     console.log('working')
   }
+
+  path = 'services'
+  commonMethods = ['list', 'retrieve']
 }

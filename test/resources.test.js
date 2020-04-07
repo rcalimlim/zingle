@@ -8,5 +8,6 @@ describe('Resource list', () => {
     const ServicesClass = require('../lib/resources/Services').default
 
     expect(services).to.be.an.instanceof(ServicesClass)
+    expect(services.path).to.exist.and.to.equal('services')
   })
 })
