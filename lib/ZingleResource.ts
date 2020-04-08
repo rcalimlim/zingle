@@ -8,8 +8,6 @@ export class ZingleResource {
     this.zingle = zingle
     this.path = ''
     this.basePath = null
-
-    // attach resource's listed common methods to 'this'
   }
 
   private zingle: Zingle

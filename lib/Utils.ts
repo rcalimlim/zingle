@@ -3,18 +3,18 @@ export type Hash = {
   [k: string]: any;
 }
 
-export class Utils {
+export const Utils = {
   /**
    * Extract url params from a path string with param symbols.
    */
-  public static extractUrlParams = (path: string): string[] => {
+  extractUrlParams: (path: string): string[] => {
     const params = path.match(/\{\w+\}/g)
     if (!params) {
       return []
     }
 
     return params.map((param) => param.replace(/[{}]/g, ''))
-  }
+  },
 
   /**
    * Outputs a new function with interpolated object property values.
@@ -22,7 +22,7 @@ export class Utils {
    *   var fn = makeURLInterpolator('some/url/{param1}/{param2}');
    *   fn({ param1: 123, param2: 456 }); // => 'some/url/123/456'
    */
-  public makeUrlInterpolator = ((): Function => {
+  makeUrlInterpolator: ((): Function => {
     const rc: Hash = {
       '\n': '\\n',
       '"': '\\"',
@@ -37,5 +37,5 @@ export class Utils {
         )
       }
     }
-  })();
+  })()
 }
