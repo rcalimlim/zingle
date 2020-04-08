@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Hash } from './utils'
 import { Zingle } from './Zingle'
-import { CommonMethods } from './ZingleCommonMethods'
-import { createZingleMethod } from './ZingleMethod'
+import { ZingleMethod } from './ZingleMethod'
 
 export class ZingleResource {
   constructor (zingle: Zingle) {
@@ -20,13 +19,12 @@ export class ZingleResource {
   protected commonMethods: string[]|null = null
 
   // expose method creator and common method functions
-  public static createMethod = createZingleMethod
-  public static CommonMethods = CommonMethods
+  public static method = ZingleMethod
 
   protected attachCommonMethods (): void {
     if (this.commonMethods) {
       this.commonMethods.forEach((methodName: string) => {
-        (this as Hash)[methodName] = CommonMethods[methodName]
+        (this as Hash)[methodName] = ZingleMethod.common[methodName]
       })
     }
   }
