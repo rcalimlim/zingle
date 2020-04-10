@@ -2,6 +2,15 @@
 const { expect } = require('chai')
 const { Zingle, ZingleConfigEnum } = require('../lib/zingle')
 
+const fullValidTestConfig = {
+  username: 'johndoe@email.com',
+  password: 'password1234',
+  host: 'api.fakesite.com',
+  port: '123',
+  basePath: '/v2/',
+  defaultServiceId: ''
+}
+
 /**
  * Describes the main Zingle class and entrypoint for this app.
  */
@@ -54,14 +63,7 @@ describe('Zingle class', () => {
   })
 
   describe('Zingle resources', () => {
-    const zingle = new Zingle({
-      username: 'johndoe@email.com',
-      password: 'password1234',
-      host: 'api.fakesite.com',
-      port: '123',
-      basePath: '/v2/',
-      defaultServiceId: ''
-    })
+    const zingle = new Zingle(fullValidTestConfig)
     it('should have accesible resources as properties', () => {
       expect(zingle.services).to.exist
     })

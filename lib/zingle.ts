@@ -49,7 +49,7 @@ export class Zingle {
   }
 
   // zingle instance settings
-  private settings: ZingleSettings
+  public settings: ZingleSettings
   private resources = resources
 
   /**

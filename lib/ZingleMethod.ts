@@ -1,4 +1,4 @@
-import { Hash } from './utils'
+import { Utils, Hash } from './utils'
 
 /**
  * Resource method factory.
@@ -50,6 +50,31 @@ ZingleMethod.common = {
     method: 'DELETE',
     path: '{id}'
   })
+}
+
+export const CommonMethodSpecs: Record<string, ZingleMethodSpec> = {
+  create: { method: 'POST' },
+
+  list: {
+    method: 'GET',
+    methodType: 'list'
+  },
+
+  retrieve: {
+    method: 'GET',
+    path: '/{id}'
+  },
+
+  update: {
+    method: 'POST',
+    path: '{id}'
+  },
+
+  del: {
+    method: 'DELETE',
+    path: '{id}'
+  }
+
 }
 
 export { ZingleMethod }
