@@ -37,5 +37,12 @@ export const Utils = {
         )
       }
     }
-  })()
+  })(),
+
+  /**
+   * Converts a string in Pascal case into a string in camelCase.
+   */
+  pascalToCamelCase: (name: string): string => {
+    return name[0].toLowerCase() + name.substring(1)
+  }
 }

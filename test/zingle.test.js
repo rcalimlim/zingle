@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const { expect } = require('chai')
 const { Zingle, ZingleConfigEnum } = require('../lib/zingle')
 
@@ -49,6 +50,20 @@ describe('Zingle class', () => {
         defaultServiceId: ''
       }
       expect(validateConfigFn(goodConfig)).to.deep.equal(goodConfig)
+    })
+  })
+
+  describe('Zingle resources', () => {
+    const zingle = new Zingle({
+      username: 'johndoe@email.com',
+      password: 'password1234',
+      host: 'api.fakesite.com',
+      port: '123',
+      basePath: '/v2/',
+      defaultServiceId: ''
+    })
+    it('should have accesible resources as properties', () => {
+      expect(zingle.services).to.exist
     })
   })
 })

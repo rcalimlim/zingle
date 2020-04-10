@@ -1,3 +1,6 @@
+import { resources } from './resources'
+import { Utils, Hash } from './Utils'
+
 // defaults
 const DEFAULT = {
   USERNAME: '',
@@ -35,10 +38,12 @@ export const ZingleConfigEnum: string[] = ['username', 'password', 'host', 'port
 export class Zingle {
   constructor (config: ZingleConfig) {
     this.settings = this.validateConfig(config)
+    this.instantiateResources()
   }
 
   // zingle instance settings
   private settings: ZingleConfig
+  private resources = resources
 
   /**
    * Validates supplied config object by throwing an error when passed an
@@ -89,6 +94,8 @@ export class Zingle {
    * Adds and instantiates all resources onto Zingle object
    */
   private instantiateResources (): void {
-    //
+    for (const name in resources) {
+      (this as Hash)[Utils.pascalToCamelCase(name)] = new resources[name](this)
+    }
   }
 }

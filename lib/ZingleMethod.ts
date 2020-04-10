@@ -1,5 +1,4 @@
 import { Hash } from './utils'
-import Zingle from '.'
 
 /**
  * Resource method factory.
