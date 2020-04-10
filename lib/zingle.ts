@@ -21,6 +21,13 @@ export interface ZingleConfig {
   defaultServiceId?: string;
 }
 
+export interface ZingleSettings extends ZingleConfig {
+  host: string;
+  port: string;
+  basePath: string;
+  defaultServiceId: string;
+}
+
 // Zingle instance config enum
 export const ZingleConfigEnum: string[] = ['username', 'password', 'host', 'port', 'basePath', 'defaultServiceId']
 
@@ -42,14 +49,14 @@ export class Zingle {
   }
 
   // zingle instance settings
-  private settings: ZingleConfig
+  private settings: ZingleSettings
   private resources = resources
 
   /**
    * Validates supplied config object by throwing an error when passed an
    * invalid config.
    */
-  private validateConfig (config: ZingleConfig): ZingleConfig {
+  private validateConfig (config: ZingleConfig): ZingleSettings {
     // throw immediately if config is missing or not an object
     const isObject = typeof config === 'object' && !Array.isArray(config)
     if (!config || !isObject) {
