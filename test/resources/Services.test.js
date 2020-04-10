@@ -30,6 +30,7 @@ describe('Services resource', () => {
     expect(zingle.services.resourcePath).to.equal('services')
   })
   it('should have promisifed methods', () => {
+    expect(zingle.services.list({})).to.eventually.be.fulfilled
     return expect(zingle.services.list()).to.eventually.be.rejected
   })
 })

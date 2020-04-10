@@ -12,7 +12,7 @@
     "build": "rm -rf dist/ && tsc",
     "lint": "eslint --ext .js,.ts .",
     "format": "eslint --ext .js,.ts --fix .",
-    "test": "mocha -r ts-node/register test/**/*",
+    "test": "mocha -r ts-node/register test/* test/**/*",
     "coverage": "nyc npm run test"
   },
   "author": "Ross F. Calimlim <ross.calimlim@gmail.com> (rosscalimlim.me)",

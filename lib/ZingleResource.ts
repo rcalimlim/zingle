@@ -2,7 +2,6 @@
 import { Hash } from './utils'
 import { Zingle } from './Zingle'
 import {
-  ZingleMethod,
   CommonMethodSpecs,
   ZingleMethodSpec
 } from './ZingleMethod'
@@ -19,9 +18,6 @@ export class ZingleResource {
   protected basePath: string|null = null
   protected resourcePath = '' // resource name
   protected commonMethods: string[]|null = null
-
-  // expose method creator and common method functions
-  public static method = ZingleMethod
 
   /**
    * Attaches listed common methods to class instance. Must be run for each
