@@ -35,6 +35,7 @@ export class ZingleResource {
 
   protected generateMethod (spec: ZingleMethodSpec): Function {
     return (...args: any[]): Promise<any> => {
+      // TODO: BUILD OUT METHOD
       return new Promise((resolve, reject) => {
         if (args.length > 0) {
           resolve(true)
