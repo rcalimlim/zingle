@@ -26,7 +26,7 @@ export const CommonMethodSpecs: Record<string, ZingleMethodSpec> = {
 export interface ZingleMethodSpec {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   methodType?: 'list';
-  path?: string;
+  path: string;
   urlParams?: string[];
   encode?: Function;
   host?: string;
