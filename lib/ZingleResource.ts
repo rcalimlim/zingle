@@ -41,6 +41,11 @@ export class ZingleResource {
 
   protected generateMethod (spec: ZingleMethodSpec): Function {
     return (...args: any[]): Promise<any> => {
+      // attach array of url params for data replacement
+      spec.urlParams = Utils.extractUrlParams(
+        this.createSymbolicRelativePath(spec.path || '')
+      )
+
       // TODO: substitute in ZingleRequest
       return new Promise((resolve, reject) => {
         if (args.length > 0) {
