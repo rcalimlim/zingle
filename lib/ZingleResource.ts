@@ -10,9 +10,7 @@ import {
 export class ZingleResource {
   constructor (zingle: Zingle) {
     this.zingle = zingle
-    this.basePath = Utils.makeUrlInterpolator(
-      this.basePath || zingle.settings.basePath
-    )
+    this.basePath = this.basePath || zingle.settings.basePath
     this.resourcePath = this.path
     this.path = Utils.makeUrlInterpolator(this.path)
   }
@@ -50,14 +48,5 @@ export class ZingleResource {
         }
       })
     }
-  }
-
-  // Creates a relative resource path with symbols left in (unlike
-  // createFullPath which takes some data to replace them with). For example it
-  // Could produce /messages/{id}
-  public createResourcePathWithSymbols (pathWithSymbols: string): string {
-    return `/${path
-      .join(this.resourcePath, pathWithSymbols || '')
-      .replace(/\\/g, '/')}` // workaround for Windows
   }
 }
