@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import path from 'path'
-import { Utils, Hash } from './utils'
+import { Hash, Utils } from './utils'
 import { Zingle } from './Zingle'
 import {
   CommonMethodSpecs,
@@ -11,17 +11,19 @@ export class ZingleResource {
   constructor (zingle: Zingle) {
     this.zingle = zingle
     this.basePath = this.basePath || zingle.settings.basePath
-    this.resourcePath = this.path
-    this.path = Utils.makeUrlInterpolator(this.path)
+    this.basePathInterpolator = Utils.makeUrlInterpolator(this.basePath)
+    this.resourcePathInterpolator = Utils.makeUrlInterpolator(this.resourcePath)
   }
 
   private zingle: Zingle
   private CommonMethodSpecs = CommonMethodSpecs
 
-  protected basePath: string|null = null
-  protected resourcePath = '' // resource name
-  protected path = ''
-  protected commonMethods: string[]|null = null
+  protected basePath: string|null = null // usually /v1/
+  protected resourcePath = '' // resource name, could be 'contacts', passed from inheriting resource class
+  protected basePathInterpolator: Function
+  protected resourcePathInterpolator: Function
+
+  protected commonMethods: string[]|null = null // basic CRUD methods
 
   /**
    * Attaches listed common methods to class instance. Must be run for each
@@ -39,14 +41,32 @@ export class ZingleResource {
 
   protected generateMethod (spec: ZingleMethodSpec): Function {
     return (...args: any[]): Promise<any> => {
-      // TODO: BUILD OUT METHOD
+      // TODO: substitute in ZingleRequest
       return new Promise((resolve, reject) => {
         if (args.length > 0) {
-          resolve(true)
+          resolve()
         } else {
           reject(new Error())
         }
       })
     }
+  }
+
+  /**
+   * Create relative resource path (ex. /contacts/{contact})
+   */
+  public createSymbolicRelativePath (symbolicPath: string|undefined): string {
+    return `/${path.join(this.resourcePath, symbolicPath || '')}`
+  }
+
+  /**
+   * Creates a full resource request path (ex. /v1/contacts/1234)
+   */
+  public createFullPath (pathInterpolator: Function, urlData: Hash): string {
+    return path.join(
+      this.basePathInterpolator(urlData),
+      this.resourcePathInterpolator(urlData),
+      pathInterpolator(urlData)
+    )
   }
 }
