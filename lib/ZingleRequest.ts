@@ -3,7 +3,7 @@ import { ZingleResource } from './ZingleResource'
 import { Utils, Hash } from './Utils'
 
 export const ZingleRequest = {
-  buildRequestOptions: (self: ZingleResource, requestArgs, spec, overrides) => {
+  buildRequestOptions: (self: ZingleResource, requestArgs, spec, overrideData: object) => {
     // method (GET, POST)
     // path (relative symbolic path)
     // body (req body)
@@ -19,7 +19,7 @@ export const ZingleRequest = {
     const encode = spec.encode || ((data: any): any => data)
     const host = spec.host
     const pathInterpolator = Utils.makeUrlInterpolator(spec.path || '')
-    const args = Array.from(requestArgs) // copy request args
+    const args: any[] = Array.from(requestArgs) // copy request args
 
     // get request url data
     const urlData = urlParams.reduce((urlData: Hash, param: string) => {
@@ -35,6 +35,14 @@ export const ZingleRequest = {
     }, {})
 
     // construct final request path
-    const fullPath = self.createFullPath(pathInterpolator, urlData)
+    const path = self.createFullPath(pathInterpolator, urlData)
+
+    const dataFromArgs = Utils.getDataFromArgs(args)
+    const data = encode({ ...dataFromArgs, ...overrideData })
+    const options = Utils.getOptionsFromArgs(args) // TODO: fix
+
+    return {
+      method, path
+    }
   }
 }

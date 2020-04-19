@@ -1,4 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+const OPTIONS_KEYS = [
+  'maxNetworkRetries',
+  'timeout'
+]
+
+const hasOwn = (obj: Record<string, any>, prop: string): boolean => {
+  return Object.prototype.hasOwnProperty.call(obj, prop)
+}
+
 export type Hash = {
   [k: string]: any;
 }
@@ -14,6 +23,22 @@ export const Utils = {
     }
 
     return params.map((param) => param.replace(/[{}]/g, ''))
+  },
+
+  /**
+   * Return data argument from arg array
+   */
+  getDataFromArgs: (args: object[]): object => {
+    if (!Array.isArray(args) || !args[0] || typeof args[0] !== 'object') {
+      return {}
+    }
+
+    if (!Utils.isOptionsHash(args[0])) {
+      const data = args.shift()
+      return data || {}
+    }
+
+    return {}
   },
 
   /**
@@ -38,6 +63,17 @@ export const Utils = {
       }
     }
   })(),
+
+  /**
+   * Determine if object has option settings
+   */
+  isOptionsHash (o: object): boolean {
+    return (
+      o &&
+      typeof o === 'object' &&
+      OPTIONS_KEYS.some((prop) => hasOwn(o, prop))
+    )
+  },
 
   /**
    * Converts a string in Pascal case into a string in camelCase.
