@@ -63,6 +63,48 @@ export const ZingleRequest = {
       host,
       settings: options.settings
     }
+  },
+
+  makeRequest: (self, requestArgs, spec, overrideData) => {
+    return new Promise((resolve, reject) => {
+      try {
+        var opts = getRequestOpts(self, requestArgs, spec, overrideData)
+      } catch (err) {
+        reject(err)
+        return
+      }
+
+      function requestCallback (err, response) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(
+            spec.transformResponseData
+              ? spec.transformResponseData(response)
+              : response
+          )
+        }
+      }
+
+      const emptyQuery = Object.keys(opts.queryData).length === 0
+      const path = [
+        opts.requestPath,
+        emptyQuery ? '' : '?',
+        utils.stringifyRequestData(opts.queryData)
+      ].join('')
+
+      const { headers, settings } = opts
+
+      self._request(
+        opts.requestMethod,
+        opts.host,
+        path,
+        opts.bodyData,
+        opts.auth,
+        { headers, settings },
+        requestCallback
+      )
+    })
   }
 }
 
