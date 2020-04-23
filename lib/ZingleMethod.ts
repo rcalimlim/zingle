@@ -1,3 +1,5 @@
+import { Hash } from './Utils'
+
 export const CommonMethodSpecs: Record<string, ZingleMethodSpec> = {
   create: {
     method: 'POST'
@@ -30,8 +32,10 @@ export interface ZingleMethodSpec {
   methodType?: 'list';
   path?: string;
   urlParams?: string[];
+  headers?: Hash;
   encode?: Function;
   host?: string;
+  validator?: Function;
 }
 
 export type ZingleCommonMethodsEnum = 'create' | 'list' | 'retrieve' | 'update' | 'del'

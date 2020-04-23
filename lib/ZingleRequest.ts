@@ -3,21 +3,17 @@ import { ZingleResource } from './ZingleResource'
 import { Utils, Hash } from './Utils'
 
 export const ZingleRequest = {
-  buildRequestOptions: (self: ZingleResource, requestArgs, spec, overrideData: object) => {
-    // method (GET, POST)
-    // path (relative symbolic path)
-    // body (req body)
-    // query (query params?)
-    // auth
-    // headers
-    // host
-    // settings ?
-
-    const method: ZingleMethodSpec['method'] = (spec.method || 'GET').toUpperCase()
+  buildRequestOptions: (
+    self: ZingleResource,
+    requestArgs: any[],
+    spec: ZingleMethodSpec,
+    overrideData: object): ZingleRequestOptions => {
+    const method: ZingleMethodSpec['method'] = (spec.method || 'GET')
+      .toUpperCase() as ZingleMethodSpec['method']
     const symbolicPath: string = self.createSymbolicRelativePath(spec.path) // ex. /contacts/{contact}
     const urlParams = spec.urlParams || []
     const encode = spec.encode || ((data: any): any => data)
-    const host = spec.host
+    const host = spec.host || null
     const pathInterpolator = Utils.makeUrlInterpolator(spec.path || '')
     const args: any[] = Array.from(requestArgs) // copy request args
 
@@ -34,15 +30,49 @@ export const ZingleRequest = {
       return urlData
     }, {})
 
-    // construct final request path
-    const path = self.createFullPath(pathInterpolator, urlData)
-
     const dataFromArgs = Utils.getDataFromArgs(args)
     const data = encode({ ...dataFromArgs, ...overrideData })
-    const options = Utils.getOptionsFromArgs(args) // TODO: fix
+    const options = Utils.getOptionsFromArgs(args)
+
+    // Validate that there are no more args.
+    if (args.filter((x) => x != null).length) {
+      throw new Error(
+      `Zingle: Unknown arguments (${args}). Did you mean to pass an options object? (on API request to ${method} \`${symbolicPath}\`)`
+      )
+    }
+
+    // construct final request path
+    const path = self.createFullPath(pathInterpolator, urlData)
+    const headers = { ...options.headers, ...spec.headers }
+
+    if (spec.validator) {
+      spec.validator(data, { headers })
+    }
+
+    const dataInQuery = spec.method === 'GET' || spec.method === 'DELETE'
+    const bodyData = dataInQuery ? {} : data
+    const queryData = dataInQuery ? data : {}
 
     return {
-      method, path
+      method,
+      path,
+      bodyData,
+      queryData,
+      auth: options.auth,
+      headers,
+      host,
+      settings: options.settings
     }
   }
+}
+
+interface ZingleRequestOptions {
+  method: ZingleMethodSpec['method'];
+  path: string;
+  bodyData: Hash;
+  queryData: Hash;
+  auth: string|null;
+  headers: Hash;
+  host: string|null;
+  settings: Hash;
 }

@@ -42,6 +42,36 @@ export const Utils = {
   },
 
   /**
+   * Return the options hash from a list of arguments
+   */
+  getOptionsFromArgs: (args: any[]): RequestOptions => {
+    const opts: RequestOptions = {
+      auth: null,
+      headers: {},
+      settings: {}
+    }
+    if (args.length > 0) {
+      const arg = args[args.length - 1]
+      if (typeof arg === 'string') {
+        opts.auth = args.pop() || null
+      } else if (Utils.isOptionsHash(arg)) {
+        const params = args.pop()
+
+        if (params.apiKey) {
+          opts.auth = params.apiKey
+        }
+        if (Number.isInteger(params.maxNetworkRetries)) {
+          opts.settings.maxNetworkRetries = params.maxNetworkRetries
+        }
+        if (Number.isInteger(params.timeout)) {
+          opts.settings.timeout = params.timeout
+        }
+      }
+    }
+    return opts
+  },
+
+  /**
    * Outputs a new function with interpolated object property values.
    * Use like so:
    *   var fn = makeURLInterpolator('some/url/{param1}/{param2}');
@@ -81,4 +111,10 @@ export const Utils = {
   pascalToCamelCase: (name: string): string => {
     return name[0].toLowerCase() + name.substring(1)
   }
+}
+
+interface RequestOptions {
+  auth: string|null;
+  headers: Hash;
+  settings: Hash;
 }
