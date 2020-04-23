@@ -1,10 +1,11 @@
-const ZINGLE_DEFAULTS = {
+export const ZINGLE_DEFAULTS = {
   apiVersion: 'v1',
   maxNetworkRetries: 0,
   timeout: 80000,
   host: 'api.zingle.me',
   port: 443,
-  defaultServiceId: null
+  defaultServiceId: null,
+  basePath: 'v1'
 }
 
 /**
