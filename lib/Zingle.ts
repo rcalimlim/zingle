@@ -8,8 +8,8 @@ const ZINGLE_DEFAULTS = {
 }
 
 /**
- * Main object that contains configuration settings and gives access to
- * Zingle resources.
+ * Main object that contains configuration settings and has access to Zingle resources.
+ *
  * @param {string} config.username - Zingle username
  * @param {string} config.password - Zingle password
  * @param {string} [config.apiVersion='v1'] - API version string
@@ -22,6 +22,13 @@ const ZINGLE_DEFAULTS = {
  */
 export default class Zingle {
   constructor (config: ZingleParams) {
+    // username and password are required
+    if (!config.username || !config.password) {
+      throw new Error('Zingle: Config object must contain username and password')
+    }
+
+    this._username = config.username
+    this._password = config.password
     this._apiVersion = config.apiVersion || ZINGLE_DEFAULTS.apiVersion
     this._maxNetworkRetries = config.maxNetworkRetries || ZINGLE_DEFAULTS.maxNetworkRetries
     this._timeout = config.timeout || ZINGLE_DEFAULTS.timeout || 80000
@@ -30,6 +37,8 @@ export default class Zingle {
     this._defaultServiceId = config.defaultServiceId || ZINGLE_DEFAULTS.defaultServiceId
   }
 
+  private _username: string
+  private _password: string
   private _apiVersion: string
   private _maxNetworkRetries: number
   private _timeout: number
