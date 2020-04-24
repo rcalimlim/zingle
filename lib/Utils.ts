@@ -1,8 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { OPTIONS_KEYS } from './Zingle'
+
 /**
  * Utility functions, interfaces, and types
  */
 const Utils = {
+  /**
+   * Checks if passed object has passed property on it.
+   *
+   * @param {object} obj - object on which to check for property
+   * @param {string} prop - name of property
+   * @returns {boolean}
+   */
+  hasOwn: (obj: Record<string, any>, prop: string): boolean => {
+    return Object.prototype.hasOwnProperty.call(obj, prop)
+  },
+
   /**
    * Extracts symbolic URL parameters from symbolic URL string.
    *
@@ -18,6 +31,13 @@ const Utils = {
     }
 
     return params.map((param) => param.replace(/[{}]/g, ''))
+  },
+
+  isOptionsHash (obj: Record<string, any>): boolean {
+    return (
+      obj &&
+      typeof obj === 'object' && OPTIONS_KEYS.some((prop) => Utils.hasOwn(obj, prop))
+    )
   },
 
   /**

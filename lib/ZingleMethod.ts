@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ZingleResource from './ZingleResource'
-import ZingleRequest from './ZingleRequest'
+import ZingleRequest, { ZingleRequestSpec } from './ZingleRequest'
 import Utils from './Utils'
 import { AxiosResponse } from 'axios'
 
@@ -37,12 +37,13 @@ const ZingleMethod = {
 
   // creates a resource method based on a spec
   generateMethod: (resource: ZingleResource, spec: ZingleMethodSpec): Function => {
-    // TODO: create actual method that returns prepped axios request
     return (...args: any[]): Promise<AxiosResponse> => {
+      // TODO: parse everything before feeding to makeRequest
       const symbolicPath = resource.createSymbolicResourcePath(spec.path || '')
       spec.urlParams = Utils.extractUrlParams(symbolicPath)
 
-      return makeRequest(resource, args, spec, {})
+      const requestArgs = Array.from(args)
+      return makeRequest(resource, requestArgs, spec as ZingleRequestSpec, {})
     }
   },
 
@@ -60,4 +61,11 @@ export interface ZingleMethodSpec {
   host?: string; // host override if necessary
   encode?: Function; // data encoding function
   urlParams?: string[];
+}
+
+export interface ZingleRequestSpec extends ZingleMethodSpec {
+  path: string; // resource path
+  host: string; // host override if necessary
+  encode: Function; // data encoding function
+  urlParams: string[];
 }

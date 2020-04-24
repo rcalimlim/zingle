@@ -4,7 +4,7 @@ export const ZINGLE_DEFAULTS = {
   timeout: 80000,
   host: 'api.zingle.me',
   port: 443,
-  defaultServiceId: null,
+  serviceId: null,
   basePath: 'v1'
 }
 
@@ -18,7 +18,7 @@ export const ZINGLE_DEFAULTS = {
  * @param {int} [config.timeout=80000] - milliseconds to wait before timing out a network req
  * @param {string} [config.host='api.zingle.me'] - api host URL
  * @param {int} [config.port=443] - api host port
- * @param {string} [config.defaultServiceId=null] - default all requests to be for a specific
+ * @param {string} [config.serviceId=null] - default all requests to be for a specific
  *  Zingle service, otherwise requests will be made for resources from across all services
  */
 export default class Zingle {
@@ -35,7 +35,7 @@ export default class Zingle {
     this._timeout = config.timeout || ZINGLE_DEFAULTS.timeout || 80000
     this._host = config.host || ZINGLE_DEFAULTS.host
     this._port = config.port || ZINGLE_DEFAULTS.port || ZINGLE_DEFAULTS.port
-    this._defaultServiceId = config.defaultServiceId || ZINGLE_DEFAULTS.defaultServiceId
+    this._defaultServiceId = config.serviceId || ZINGLE_DEFAULTS.serviceId
   }
 
   private _username: string
@@ -68,7 +68,9 @@ export interface ZingleParams {
   apiVersion?: string; // 'v1'
   maxNetworkRetries?: number; // 0 (can be overriden per req)
   timeout?: number; // 80000 (can be overriden per req)
-  host?: string; // 'api.zingle.me'
-  port?: number; // string
-  defaultServiceId?: string|null; // null
+  host?: string; // 'api.zingle.me' (can be overriden per req)
+  port?: number; // string (can be overriden per req)
+  serviceId?: string|null; // null (can be overriden per req)
 }
+
+export const OPTIONS_KEYS = ['maxNetworkRetries', 'timeout', 'host', 'port', 'serviceId']
