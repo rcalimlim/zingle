@@ -3,6 +3,22 @@
  * Utility functions, interfaces, and types
  */
 const Utils = {
+  /**
+   * Extracts symbolic URL parameters from symbolic URL string.
+   *
+   * @param {string} path - symbolic url string
+   * @returns {array}
+   */
+  extractUrlParams: (path: string): string[] => {
+    const params = path.match(/\{\w+\}/g)
+
+    // if no path params, return empty array
+    if (!params) {
+      return []
+    }
+
+    return params.map((param) => param.replace(/[{}]/g, ''))
+  },
 
   /**
    * Outputs a new function with interpolated object property values.

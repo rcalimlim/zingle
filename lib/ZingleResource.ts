@@ -12,7 +12,7 @@ const { generateMethod, CommonSpecs } = ZingleMethod
  *
  * @param {object} zingle - Zingle instance to reference settings
  */
-export class ZingleResource {
+export default class ZingleResource {
   constructor (zingle: Zingle) {
     this.zingle = zingle
   }
@@ -58,17 +58,18 @@ export class ZingleResource {
    * @param {string} symbolicPath - spec path of a resource method
    * @returns {string} - ex. '/contacts/{id}'
    */
-  protected createSymbolicResourcePath (symbolicPath: string): string {
+  public createSymbolicResourcePath (symbolicPath: string): string {
     return path.join('/', this.resourcePath, symbolicPath || '')
   }
 
   /**
-   * Outputs a full interpolated method path based on passed URL data.
+   * Outputs a fully interpolated method path based on URL data.
    *
    * @param {Function} pathInterpolator - interpolator function created from resource spec path
    * @param {object} urlData - Hash object of URL data that should be subbed in for symbols
+   * @returns {string} - ex. '/contacts/1234/tag/567'
    */
-  protected createFullPath (
+  public createFullPath (
     pathInterpolator: Function,
     urlData: Record<string, string|number>
   ): string {
