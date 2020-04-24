@@ -3,6 +3,7 @@ import Zingle, { ZINGLE_DEFAULTS } from './Zingle'
 import ZingleMethod, { CommonMethods } from './ZingleMethod'
 
 const { generateMethod, CommonSpecs } = ZingleMethod
+
 /**
  * Represents shared properties of all Zingle resources. Not to be instantiated directly.
  *
@@ -11,7 +12,6 @@ const { generateMethod, CommonSpecs } = ZingleMethod
 export class ZingleResource {
   constructor (zingle: Zingle) {
     this.zingle = zingle
-    this.attachCommonMethods()
   }
 
   protected zingle: Zingle
@@ -27,7 +27,7 @@ export class ZingleResource {
   public del: Function|undefined
 
   // called on instantiation to attach zingle methods based on common methods list from resource
-  private attachCommonMethods (): void {
+  protected attachCommonMethods (): void {
     for (const method of this.commonMethods) {
       const spec = CommonSpecs[method]
       this[method] = generateMethod(this, spec)
