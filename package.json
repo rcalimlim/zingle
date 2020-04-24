@@ -18,8 +18,11 @@
   "author": "Ross F. Calimlim <ross.calimlim@gmail.com> (rosscalimlim.me)",
   "license": "MIT",
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
+    "@types/nock": "^11.1.0",
+    "@types/node": "^13.13.2",
     "@types/sinon": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
@@ -43,8 +46,6 @@
     "test": "tests"
   },
   "dependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/nock": "^11.1.0",
     "axios": "^0.19.2"
   },
   "repository": {
