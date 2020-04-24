@@ -19,11 +19,11 @@ export class ZingleResource {
 
   protected zingle: Zingle
   protected basePath: string = ZINGLE_DEFAULTS.basePath // default to top-level base path
-  protected path = '' // the resource name set on each inheriting resource
+  protected resourcePath = '' // the resource name set on each inheriting resource
   protected commonMethods: CommonMethods[] = [] // list of common methods inheriting resource has
   protected interpolators: Record<string, Function> = { // holds basePath and path interpolators
     basePath: () => this.basePath,
-    path: () => this.path
+    resourcePath: () => this.resourcePath
   }
 
   // declare intent for common methods
@@ -48,7 +48,7 @@ export class ZingleResource {
    */
   protected createInterpolators (): void {
     this.interpolators.basePath = Utils.makeUrlInterpolator(this.basePath)
-    this.interpolators.path = Utils.makeUrlInterpolator(this.path)
+    this.interpolators.resourcePath = Utils.makeUrlInterpolator(this.resourcePath)
   }
 
   /**
@@ -59,6 +59,6 @@ export class ZingleResource {
    * @returns {string} - ex. '/contacts/{id}'
    */
   protected createSymbolicResourcePath (symbolicPath: string): string {
-    return path.join('/', this.path, symbolicPath || '')
+    return path.join('/', this.resourcePath, symbolicPath || '')
   }
 }

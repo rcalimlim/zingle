@@ -10,7 +10,7 @@ export default class Contacts extends ZingleResource {
     this.createInterpolators()
   }
 
-  path = 'contacts'
+  resourcePath = 'contacts'
   commonMethods: CommonMethods[] = ['create', 'list', 'retrieve', 'update', 'del']
 
   // TODO: add remaining special methods
