@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import ZingleResource from './ZingleResource'
 import { OPTIONS_KEYS } from './Zingle'
 import Utils from './Utils'

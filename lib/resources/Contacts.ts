@@ -1,5 +1,5 @@
-import { ZingleResource } from '../ZingleResource'
 import Zingle from '../Zingle'
+import ZingleResource from '../ZingleResource'
 import { CommonMethods } from '../ZingleMethod'
 
 export default class Contacts extends ZingleResource {
