@@ -43,7 +43,8 @@
     "test": "tests"
   },
   "dependencies": {
-    "@types/nock": "^11.1.0"
+    "@types/nock": "^11.1.0",
+    "axios": "^0.19.2"
   },
   "repository": {
     "type": "git",
