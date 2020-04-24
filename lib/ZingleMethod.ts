@@ -11,6 +11,10 @@ const ZingleMethod = {
 
 }
 
+ZingleMethod.Common = {
+
+}
+
 export default ZingleMethod
 
 export interface ZingleMethodSpec {
