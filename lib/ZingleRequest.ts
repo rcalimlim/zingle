@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AxiosResponse } from 'axios'
-import { ZingleRequestSpec } from './ZingleMethod'
+import axios, { AxiosResponse } from 'axios'
 import ZingleResource from './ZingleResource'
 import { OPTIONS_KEYS } from './Zingle'
 import Utils from './Utils'
+import { ZingleMethodSpec } from './ZingleMethod'
 
 // Request namespace
 const ZingleRequest = {
@@ -100,12 +100,12 @@ const ZingleRequest = {
   },
 
   // send axios request
-  makeRequest: async (
+  makeRequest: (
     resource: ZingleResource,
     requestArgs: any[],
-    spec: ZingleRequestSpec,
+    spec: ZingleMethodSpec,
     overrideData: Record<string, string|number>
-  ): Promise<AxiosResponse> => {
+  ): AxiosResponse => {
     /**
      * first args could be
      *  - string representing resource id for retrieval/update/deletion
@@ -115,10 +115,37 @@ const ZingleRequest = {
      * second to last arg could be per request options:
      *  - hash with request opts
      */
+    const pathInterpolator = Utils.makeUrlInterpolator(spec.path || '')
+    const encode = spec.encode || ((data: any): any => data)
 
-    // build urlData from spec urlParams and requestArgs to pass to full url builder
-    const urlData = ZingleRequest.buildUrlData(spec.urlParams, requestArgs)
+    // extract relevant data from request arguments
+    const urlData = ZingleRequest.buildUrlData(spec.urlParams || [], requestArgs)
     const argData = ZingleRequest.extractArgData(requestArgs)
+    const optData = ZingleRequest.extractOptionsData(requestArgs)
+
+    // build req params
+    const requestMethod = (spec.method || 'GET').toUpperCase() as ZingleMethodSpec['method']
+    const requestPath = resource.createFullPath(pathInterpolator, urlData)
+    // build data object
+    const data = encode({ ...argData, ...overrideData })
+    // assign data to appropriate argument
+    const dataInQuery = spec.method === 'GET' || spec.method === 'DELETE'
+    const bodyData = dataInQuery ? {} : data
+    const queryData = dataInQuery ? data : {}
+    const headers = { ...optData.headers, ...spec.headers }
+
+    // get default configuration for axios instance
+    const defaultRequestInstance = resource.defaultRequestInstance()
+
+    return defaultRequestInstance.request({
+      method: requestMethod,
+      url: requestPath,
+      params: queryData,
+      data: bodyData,
+      headers: headers,
+      ...(optData.auth ? { auth: optData.auth } : null), // either override or leave out
+      ...(optData.timeout ? { timeout: optData.timeout } : null) // either override or leave out
+    })
   }
 }
 

@@ -15,6 +15,7 @@ const { generateMethod, CommonSpecs } = ZingleMethod
 export default class ZingleResource {
   constructor (zingle: Zingle) {
     this.zingle = zingle
+    this.defaultRequestInstance = zingle.defaultRequestInstance.bind(zingle)
   }
 
   protected zingle: Zingle
@@ -32,6 +33,9 @@ export default class ZingleResource {
   public retrieve: Function|undefined
   public update: Function|undefined
   public del: Function|undefined
+
+  // declare intent for default config axios instance
+  public defaultRequestInstance: Function
 
   /**
    * Must be called in all inheriting Resource constructors to attach listed common methods.

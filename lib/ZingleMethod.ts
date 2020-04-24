@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ZingleResource from './ZingleResource'
-import ZingleRequest, { ZingleRequestSpec } from './ZingleRequest'
+import ZingleRequest from './ZingleRequest'
 import Utils from './Utils'
 import { AxiosResponse } from 'axios'
 
@@ -43,7 +43,7 @@ const ZingleMethod = {
       spec.urlParams = Utils.extractUrlParams(symbolicPath)
 
       const requestArgs = Array.from(args)
-      return makeRequest(resource, requestArgs, spec as ZingleRequestSpec, {})
+      return makeRequest(resource, requestArgs, spec, {})
     }
   },
 
@@ -61,11 +61,5 @@ export interface ZingleMethodSpec {
   host?: string; // host override if necessary
   encode?: Function; // data encoding function
   urlParams?: string[];
-}
-
-export interface ZingleRequestSpec extends ZingleMethodSpec {
-  path: string; // resource path
-  host: string; // host override if necessary
-  encode: Function; // data encoding function
-  urlParams: string[];
+  headers?: Record<string, any>;
 }

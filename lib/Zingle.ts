@@ -1,11 +1,13 @@
+import axios, { AxiosInstance } from 'axios'
+
 export const ZINGLE_DEFAULTS = {
   apiVersion: 'v1',
   maxNetworkRetries: 0,
   timeout: 80000,
   host: 'api.zingle.me',
   port: 443,
-  serviceId: null,
-  basePath: 'v1'
+  basePath: 'v1',
+  serviceId: null
 }
 
 /**
@@ -18,6 +20,7 @@ export const ZINGLE_DEFAULTS = {
  * @param {int} [config.timeout=80000] - milliseconds to wait before timing out a network req
  * @param {string} [config.host='api.zingle.me'] - api host URL
  * @param {int} [config.port=443] - api host port
+ * @param {string} [config.basePath='v1'] - api base url
  * @param {string} [config.serviceId=null] - default all requests to be for a specific
  *  Zingle service, otherwise requests will be made for resources from across all services
  */
@@ -34,7 +37,8 @@ export default class Zingle {
     this._maxNetworkRetries = config.maxNetworkRetries || ZINGLE_DEFAULTS.maxNetworkRetries
     this._timeout = config.timeout || ZINGLE_DEFAULTS.timeout || 80000
     this._host = config.host || ZINGLE_DEFAULTS.host
-    this._port = config.port || ZINGLE_DEFAULTS.port || ZINGLE_DEFAULTS.port
+    this._port = config.port || ZINGLE_DEFAULTS.port
+    this._basePath = config.basePath || ZINGLE_DEFAULTS.basePath
     this._defaultServiceId = config.serviceId || ZINGLE_DEFAULTS.serviceId
   }
 
@@ -45,6 +49,7 @@ export default class Zingle {
   private _timeout: number
   private _host: string
   private _port: number
+  private _basePath: string
   private _defaultServiceId: string|null
 
   // TODO: getters/setters for all zingle settings
@@ -60,6 +65,20 @@ export default class Zingle {
       throw new Error(`Zingle: API version is invalid (${version})`)
     }
   }
+
+  public defaultRequestInstance (): AxiosInstance {
+    const configuredInstance = axios.create({
+      timeout: this._timeout,
+      auth: {
+        username: this._username,
+        password: this._password
+      }
+    })
+
+    // TODO: add response interceptor
+
+    return configuredInstance
+  }
 }
 
 export interface ZingleParams {
@@ -69,7 +88,8 @@ export interface ZingleParams {
   maxNetworkRetries?: number; // 0 (can be overriden per req)
   timeout?: number; // 80000 (can be overriden per req)
   host?: string; // 'api.zingle.me' (can be overriden per req)
-  port?: number; // string (can be overriden per req)
+  port?: number; // (can be overriden per req)
+  basePath?: string; // (can be overriden per req)
   serviceId?: string|null; // null (can be overriden per req)
 }
 
