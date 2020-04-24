@@ -6,8 +6,4 @@ const Utils = {
   //
 }
 
-export interface Utils {
-  Hash: { [k: string]: any }; // basic key, value type
-}
-
 export default Utils
