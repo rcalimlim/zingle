@@ -61,4 +61,23 @@ export class ZingleResource {
   protected createSymbolicResourcePath (symbolicPath: string): string {
     return path.join('/', this.resourcePath, symbolicPath || '')
   }
+
+  /**
+   * Outputs a full interpolated method path based on passed URL data.
+   *
+   * @param {Function} pathInterpolator - interpolator function created from resource spec path
+   * @param {object} urlData - Hash object of URL data that should be subbed in for symbols
+   */
+  protected createFullPath (
+    pathInterpolator: Function,
+    urlData: Record<string, string|number>
+  ): string {
+    return path
+      .join(
+        '/',
+        this.interpolators.basePath(urlData),
+        this.interpolators.resourcePath(urlData),
+        pathInterpolator(urlData)
+      )
+  }
 }
