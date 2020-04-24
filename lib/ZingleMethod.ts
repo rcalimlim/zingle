@@ -28,7 +28,7 @@ const CommonMethodSpecs: Record<CommonMethods, ZingleMethodSpec> = {
 }
 
 // Method namespace
-const ZingleMethod: Record<string, any> = {
+const ZingleMethod = {
 
   // creates a resource method based on a spec
   generateMethod: (resource: ZingleResource, spec: ZingleMethodSpec): Function => {
@@ -36,7 +36,7 @@ const ZingleMethod: Record<string, any> = {
     return (): null => null
   },
 
-  Common: CommonMethodSpecs
+  CommonSpecs: CommonMethodSpecs
 }
 
 export default ZingleMethod
