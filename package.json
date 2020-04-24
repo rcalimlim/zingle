@@ -43,6 +43,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/nock": "^11.1.0",
     "axios": "^0.19.2"
   },
