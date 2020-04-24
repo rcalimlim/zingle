@@ -63,7 +63,14 @@ const Utils = {
         )
       }
     }
-  })()
+  })(),
+
+  /**
+   * Convert name to camelCase
+   */
+  pascalToCamelCase: (name: string): string => {
+    return name[0].toLowerCase() + name.substring(1)
+  }
 }
 
 export default Utils

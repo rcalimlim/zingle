@@ -37,7 +37,7 @@ const ZingleMethod = {
 
   // creates a resource method based on a spec
   generateMethod: (resource: ZingleResource, spec: ZingleMethodSpec): Function => {
-    return (...args: any[]): Promise<AxiosResponse> => {
+    return (...args: any[]): AxiosResponse => {
       // TODO: parse everything before feeding to makeRequest
       const symbolicPath = resource.createSymbolicResourcePath(spec.path || '')
       spec.urlParams = Utils.extractUrlParams(symbolicPath)

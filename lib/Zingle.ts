@@ -1,4 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
+import Resources from './Resources'
+import Utils from './Utils'
 
 export const ZINGLE_DEFAULTS = {
   apiVersion: 'v1',
@@ -40,6 +42,9 @@ export default class Zingle {
     this._port = config.port || ZINGLE_DEFAULTS.port
     this._basePath = config.basePath || ZINGLE_DEFAULTS.basePath
     this._defaultServiceId = config.serviceId || ZINGLE_DEFAULTS.serviceId
+
+    // attach all resources
+    this.attachResources()
   }
 
   private _username: string
@@ -51,6 +56,12 @@ export default class Zingle {
   private _port: number
   private _basePath: string
   private _defaultServiceId: string|null
+
+  private attachResources (): void {
+    for (const name in Resources) {
+      (this as Record<string, any>)[Utils.pascalToCamelCase(name)] = new Resources[name](this)
+    }
+  }
 
   // TODO: getters/setters for all zingle settings
   public get apiVersion (): string {
