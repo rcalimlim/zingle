@@ -2,12 +2,13 @@
 import axios, { AxiosInstance } from 'axios'
 import Resources from './Resources'
 import Utils from './Utils'
+import path = require('path')
 
 export const ZINGLE_DEFAULTS = {
   apiVersion: 'v1',
   maxNetworkRetries: 0,
   timeout: 80000,
-  host: 'api.zingle.me',
+  host: 'https://api.zingle.me',
   port: 443,
   basePath: 'v1',
   serviceId: null
@@ -42,7 +43,7 @@ export default class Zingle {
     this._host = config.host || ZINGLE_DEFAULTS.host
     this._port = config.port || ZINGLE_DEFAULTS.port
     this._basePath = config.basePath || ZINGLE_DEFAULTS.basePath
-    this._defaultServiceId = config.serviceId || ZINGLE_DEFAULTS.serviceId
+    this._serviceId = config.serviceId || ZINGLE_DEFAULTS.serviceId
 
     // attach all resources
     this.attachResources()
@@ -56,7 +57,7 @@ export default class Zingle {
   private _host: string
   private _port: number
   private _basePath: string
-  private _defaultServiceId: string|null
+  private _serviceId: string|null
 
   private attachResources (): void {
     for (const name in Resources) {
@@ -79,7 +80,16 @@ export default class Zingle {
   }
 
   public defaultRequestInstance (): AxiosInstance {
+    const hasDefaultServiceId = !!this._serviceId
+    const baseURL = path.join(
+      this._host,
+      this._basePath,
+      hasDefaultServiceId
+        ? `/services/${this._serviceId}`
+        : ''
+    )
     const configuredInstance = axios.create({
+      baseURL,
       timeout: this._timeout,
       auth: {
         username: this._username,
