@@ -30,8 +30,8 @@ export const ZINGLE_DEFAULTS = {
 export default class Zingle {
   constructor (config: ZingleParams) {
     // username and password are required
-    if (!config.username || !config.password) {
-      throw new Error('Zingle: Config object must contain username and password')
+    if (!config || !config.username || !config.password) {
+      throw new Error('Zingle: Config must be an object containing a username and password')
     }
 
     this._username = config.username

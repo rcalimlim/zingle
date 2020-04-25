@@ -1,8 +1,9 @@
 const { expect } = require('chai')
 const nock = require('nock')
 const axios = require('axios')
+const Zingle = require('../lib/Zingle').default
 
-describe('Zingle object', () => {
+describe('Zingle module', () => {
   let scope
   before(() => {
     nock.disableNetConnect() // disable all net connections
@@ -15,4 +16,17 @@ describe('Zingle object', () => {
   })
 
   // begin tests
+  describe('config object', () => {
+    it('should require a config', () => {
+      expect(() => Zingle()).to.throw(
+        /Zingle: Config must be an object containing a username and password/
+      )
+    })
+
+    it('should only accept a config with at least a username and password', () => {
+      expect(() => Zingle({})).to.throw(
+        /Zingle: Config must be an object containing a username and password/
+      )
+    })
+  })
 })
