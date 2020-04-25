@@ -72,14 +72,20 @@ describe('Zingle module', () => {
       expect(zingle.defaultRequestInstance().defaults).to.haveOwnProperty('auth')
         .and.to.deep.equal({ username: TEST_CONFIG.username, password: TEST_CONFIG.password })
       expect(zingle.defaultRequestInstance().defaults).to.haveOwnProperty('baseURL')
-        .and.to.equal(path.join(ZINGLE_DEFAULTS.host, ZINGLE_DEFAULTS.basePath))
+        .and.to.equal(
+          path.join(`${ZINGLE_DEFAULTS.host}:${ZINGLE_DEFAULTS.port}`, ZINGLE_DEFAULTS.basePath)
+        )
     })
 
     it('should produce a request instance that includes default service id if specified', () => {
       const serviceId = 'abc123'
       const zingle = new Zingle({ ...TEST_CONFIG, serviceId })
-      const baseUrl = path
-        .join(ZINGLE_DEFAULTS.host, ZINGLE_DEFAULTS.basePath, 'services', serviceId)
+      const baseUrl = path.join(
+        `${ZINGLE_DEFAULTS.host}:${ZINGLE_DEFAULTS.port}`,
+        ZINGLE_DEFAULTS.basePath,
+        'services',
+        serviceId
+      )
       expect(zingle.defaultRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(baseUrl)
     })
