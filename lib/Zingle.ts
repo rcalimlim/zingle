@@ -28,7 +28,7 @@ export const ZINGLE_DEFAULTS = {
  *  Zingle service, otherwise requests will be made for resources from across all services
  */
 export default class Zingle {
-  constructor (config: ZingleParams) {
+  constructor (config: ZingleConfig) {
     // username and password are required
     if (!config || !config.username || !config.password) {
       throw new Error('Zingle: Config must be an object containing a username and password')
@@ -60,6 +60,10 @@ export default class Zingle {
     for (const name in Resources) {
       (this as Record<string, any>)[Utils.pascalToCamelCase(name)] = new Resources[name](this)
     }
+  }
+
+  private buildBaseUrl (): string {
+    //
   }
 
   public createRequestInstance (): AxiosInstance {
@@ -155,7 +159,7 @@ export default class Zingle {
   }
 }
 
-export interface ZingleParams {
+export interface ZingleConfig {
   username: string;
   password: string;
   maxNetworkRetries?: number; // 0 (can be overriden per req)

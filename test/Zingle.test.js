@@ -100,6 +100,25 @@ describe('Zingle module', () => {
       expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(baseUrl)
     })
+
+    it('should accept a config object', () => {
+      const zingle = new Zingle(TEST_CONFIG)
+      const config = {
+        username: 'fakeguy@email.com',
+        password: 'fakepassword',
+        timout: 9999999,
+        host: 'http://google.com',
+        port: 123,
+        basePath: 'v3',
+        serviceId: 'fake9876'
+      }
+      expect(zingle.createRequestInstance(config).defaults).to.haveOwnProperty('auth')
+        .and.to.deep.equal({ username: config.username, password: config.password })
+      expect(zingle.createRequestInstance(config).defaults).to.haveOwnProperty('timeout')
+        .and.to.equal(config.timeout)
+      expect(zingle.createRequestInstance(config).defaults).to.haveOwnProperty('baseURL')
+        .and.to.equal(zingle.buildBaseUrl())
+    })
   })
 
   describe('getters/setters', () => {
