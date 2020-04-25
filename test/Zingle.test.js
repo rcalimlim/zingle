@@ -84,4 +84,42 @@ describe('Zingle module', () => {
         .and.to.equal(baseUrl)
     })
   })
+
+  describe('getters/setters', () => {
+    it('has maxNetworkRetries', () => {
+      const zingle = new Zingle(TEST_CONFIG)
+      expect(zingle.maxNetworkRetries).to.exist.and.to.equal(ZINGLE_DEFAULTS.maxNetworkRetries)
+    })
+
+    it('has timeout', () => {
+      const zingle = new Zingle(TEST_CONFIG)
+      expect(zingle.timeout).to.exist.and.to.equal(ZINGLE_DEFAULTS.timeout)
+    })
+
+    it('has host', () => {
+      const zingle = new Zingle(TEST_CONFIG)
+      expect(zingle.host).to.exist.and.to.equal(ZINGLE_DEFAULTS.host)
+    })
+
+    it('has port', () => {
+      const zingle = new Zingle(TEST_CONFIG)
+      expect(zingle.port).to.exist.and.to.equal(ZINGLE_DEFAULTS.port)
+    })
+
+    it('has basePath', () => {
+      const zingle = new Zingle(TEST_CONFIG)
+      expect(zingle.basePath).to.exist.and.to.equal(ZINGLE_DEFAULTS.basePath)
+    })
+
+    it('has serviceId', () => {
+      const zingle = new Zingle(TEST_CONFIG)
+      expect(zingle.serviceId).to.equal(ZINGLE_DEFAULTS.serviceId)
+    })
+
+    it('should not allow access to username/password', () => {
+      const zingle = new Zingle(TEST_CONFIG)
+      expect(zingle.username).to.not.exist
+      expect(zingle.password).to.not.exist
+    })
+  })
 })

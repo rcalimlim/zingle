@@ -85,14 +85,72 @@ export default class Zingle {
     return configuredInstance
   }
 
+  /**
+   * Getters/setters
+   */
   // maxNetworkRetries get/set
   public get maxNetworkRetries (): number {
     return this._maxNetworkRetries
   }
 
-  public set maxNetworkRetries (retries) {
-    if (typeof retries !== 'number') {
-      throw new Error(`Zingle: must specify number for maxNetworkRetries, got ${retries}`)
+  public set maxNetworkRetries (r) {
+    if (typeof r !== 'number') {
+      throw new Error(`Zingle: must specify number for maxNetworkRetries, got ${r}`)
+    }
+  }
+
+  // timeout get/set
+  public get timeout (): number {
+    return this._timeout
+  }
+
+  public set timeout (t) {
+    if (typeof t !== 'number') {
+      throw new Error(`Zingle: must specify a number for timeout, got ${t}`)
+    }
+  }
+
+  // host get/set
+  public get host (): string {
+    return this._host
+  }
+
+  public set host (h) {
+    if (typeof h !== 'number') {
+      throw new Error(`Zingle: must specify a number for port, got ${h}`)
+    }
+  }
+
+  // port get/set
+  public get port (): number {
+    return this._port
+  }
+
+  public set port (p) {
+    if (typeof p !== 'number') {
+      throw new Error(`Zingle: must specify a number for port, got ${p}`)
+    }
+  }
+
+  // basePath get/set
+  public get basePath (): string {
+    return this._basePath
+  }
+
+  public set basePath (b) {
+    if (typeof b !== 'string') {
+      throw new Error(`Zingle: must specify a string for basePath, got ${b}`)
+    }
+  }
+
+  // basePath get/set
+  public get serviceId (): string|null {
+    return this._serviceId
+  }
+
+  public set serviceId (s) {
+    if (typeof s !== 'string') {
+      throw new Error(`Zingle: must specify a string for serviceId, got ${s}`)
     }
   }
 }
