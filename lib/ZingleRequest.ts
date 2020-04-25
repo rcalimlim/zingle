@@ -135,9 +135,9 @@ const ZingleRequest = {
     const headers = { ...optData.headers, ...spec.headers }
 
     // get default configuration for axios instance
-    const defaultRequestInstance = resource.defaultRequestInstance()
+    const createRequestInstance = resource.createRequestInstance()
 
-    return defaultRequestInstance.request({
+    return createRequestInstance.request({
       method: requestMethod,
       url: requestPath,
       params: queryData,

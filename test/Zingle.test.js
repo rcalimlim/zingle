@@ -66,12 +66,12 @@ describe('Zingle module', () => {
   describe('request instance', () => {
     it('should produce a default-configured request instance', () => {
       const zingle = new Zingle(TEST_CONFIG)
-      expect(zingle.defaultRequestInstance()).to.haveOwnProperty('defaults')
-      expect(zingle.defaultRequestInstance().defaults).to.haveOwnProperty('timeout')
+      expect(zingle.createRequestInstance()).to.haveOwnProperty('defaults')
+      expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('timeout')
         .and.to.equal(ZINGLE_DEFAULTS.timeout)
-      expect(zingle.defaultRequestInstance().defaults).to.haveOwnProperty('auth')
+      expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('auth')
         .and.to.deep.equal({ username: TEST_CONFIG.username, password: TEST_CONFIG.password })
-      expect(zingle.defaultRequestInstance().defaults).to.haveOwnProperty('baseURL')
+      expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(
           path.join(`${ZINGLE_DEFAULTS.host}:${ZINGLE_DEFAULTS.port}`, ZINGLE_DEFAULTS.basePath)
         )
@@ -86,7 +86,18 @@ describe('Zingle module', () => {
         'services',
         serviceId
       )
-      expect(zingle.defaultRequestInstance().defaults).to.haveOwnProperty('baseURL')
+      expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
+        .and.to.equal(baseUrl)
+    })
+
+    it('should produce a request instance with port config override', () => {
+      const port = 8000
+      const zingle = new Zingle({ ...TEST_CONFIG, port })
+      const baseUrl = path.join(
+        `${ZINGLE_DEFAULTS.host}:${String(port)}`,
+        ZINGLE_DEFAULTS.basePath
+      )
+      expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(baseUrl)
     })
   })

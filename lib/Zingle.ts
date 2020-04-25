@@ -62,10 +62,10 @@ export default class Zingle {
     }
   }
 
-  public defaultRequestInstance (): AxiosInstance {
+  public createRequestInstance (): AxiosInstance {
     const hasDefaultServiceId = !!this._serviceId
     const baseURL = path.join(
-      `${this._host}:${this._port}`,
+      `${this._host}:${String(this._port)}`,
       this._basePath,
       hasDefaultServiceId
         ? `/services/${this._serviceId}`
