@@ -5,7 +5,6 @@ import Utils from './Utils'
 import path = require('path')
 
 export const ZINGLE_DEFAULTS = {
-  apiVersion: 'v1',
   maxNetworkRetries: 0,
   timeout: 80000,
   host: 'https://api.zingle.me',
@@ -37,7 +36,6 @@ export default class Zingle {
 
     this._username = config.username
     this._password = config.password
-    this._apiVersion = config.apiVersion || ZINGLE_DEFAULTS.apiVersion
     this._maxNetworkRetries = config.maxNetworkRetries || ZINGLE_DEFAULTS.maxNetworkRetries
     this._timeout = config.timeout || ZINGLE_DEFAULTS.timeout || 80000
     this._host = config.host || ZINGLE_DEFAULTS.host
@@ -51,7 +49,6 @@ export default class Zingle {
 
   private _username: string
   private _password: string
-  private _apiVersion: string
   private _maxNetworkRetries: number
   private _timeout: number
   private _host: string
@@ -88,17 +85,14 @@ export default class Zingle {
     return configuredInstance
   }
 
-  // TODO: getters/setters for all zingle settings
-  public get apiVersion (): string {
-    return this._apiVersion
+  // maxNetworkRetries get/set
+  public get maxNetworkRetries (): number {
+    return this._maxNetworkRetries
   }
 
-  public set apiVersion (version: string) {
-    const validVersion = /^v[1-9]+$/
-    if (validVersion.test(version)) {
-      this._apiVersion = version
-    } else {
-      throw new Error(`Zingle: API version is invalid (${version})`)
+  public set maxNetworkRetries (retries) {
+    if (typeof retries !== 'number') {
+      throw new Error(`Zingle: must specify number for maxNetworkRetries, got ${retries}`)
     }
   }
 }
@@ -106,7 +100,6 @@ export default class Zingle {
 export interface ZingleParams {
   username: string;
   password: string;
-  apiVersion?: string; // 'v1'
   maxNetworkRetries?: number; // 0 (can be overriden per req)
   timeout?: number; // 80000 (can be overriden per req)
   host?: string; // 'api.zingle.me' (can be overriden per req)

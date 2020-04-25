@@ -44,7 +44,6 @@ describe('Zingle module', () => {
 
     it('should apply defaults correctly when not configured explicitly', () => {
       const zingle = new Zingle(TEST_CONFIG)
-      expect(zingle._apiVersion).to.equal(ZINGLE_DEFAULTS.apiVersion)
       expect(zingle._maxNetworkRetries).to.equal(ZINGLE_DEFAULTS.maxNetworkRetries)
       expect(zingle._timeout).to.equal(ZINGLE_DEFAULTS.timeout)
       expect(zingle._host).to.equal(ZINGLE_DEFAULTS.host)
