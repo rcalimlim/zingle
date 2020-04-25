@@ -65,20 +65,6 @@ export default class Zingle {
     }
   }
 
-  // TODO: getters/setters for all zingle settings
-  public get apiVersion (): string {
-    return this._apiVersion
-  }
-
-  public set apiVersion (version: string) {
-    const validVersion = /^v[1-9]+$/
-    if (validVersion.test(version)) {
-      this._apiVersion = version
-    } else {
-      throw new Error(`Zingle: API version is invalid (${version})`)
-    }
-  }
-
   public defaultRequestInstance (): AxiosInstance {
     const hasDefaultServiceId = !!this._serviceId
     const baseURL = path.join(
@@ -100,6 +86,20 @@ export default class Zingle {
     // TODO: add response interceptor
 
     return configuredInstance
+  }
+
+  // TODO: getters/setters for all zingle settings
+  public get apiVersion (): string {
+    return this._apiVersion
+  }
+
+  public set apiVersion (version: string) {
+    const validVersion = /^v[1-9]+$/
+    if (validVersion.test(version)) {
+      this._apiVersion = version
+    } else {
+      throw new Error(`Zingle: API version is invalid (${version})`)
+    }
   }
 }
 
