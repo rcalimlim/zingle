@@ -62,19 +62,24 @@ export default class Zingle {
     }
   }
 
-  private buildBaseUrl (): string {
-    //
+  private buildBaseUrl (
+    host = this._host,
+    port = this._port,
+    basePath = this._basePath,
+    serviceId = this._serviceId
+  ): string {
+    return path.join(
+      `${host}:${String(port)}`,
+      basePath,
+      serviceId
+        ? `/services/${serviceId}`
+        : ''
+    )
   }
 
   public createRequestInstance (): AxiosInstance {
     const hasDefaultServiceId = !!this._serviceId
-    const baseURL = path.join(
-      `${this._host}:${String(this._port)}`,
-      this._basePath,
-      hasDefaultServiceId
-        ? `/services/${this._serviceId}`
-        : ''
-    )
+    const baseURL = this.buildBaseUrl()
     const configuredInstance = axios.create({
       baseURL,
       timeout: this._timeout,
