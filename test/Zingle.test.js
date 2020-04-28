@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
+require('dotenv').config()
 const { expect } = require('chai')
 const nock = require('nock')
-const axios = require('axios')
 const Zingle = require('../lib/Zingle').default
 const Resources = require('../lib/Resources').default
 const Utils = require('../lib/Utils').default
@@ -15,10 +15,9 @@ const TEST_CONFIG = {
 }
 
 describe('Zingle module', () => {
-  let scope
   before(() => {
     nock.disableNetConnect() // disable all net connections
-    scope = nock('https://api.zingle.me') // nock zingle api
+    nock('https://api.zingle.me') // nock zingle api
   })
 
   after(() => {
@@ -80,12 +79,8 @@ describe('Zingle module', () => {
     it('should produce a request instance that includes default service id if specified', () => {
       const serviceId = 'abc123'
       const zingle = new Zingle({ ...TEST_CONFIG, serviceId })
-      const baseUrl = path.join(
-        `${ZINGLE_DEFAULTS.host}:${ZINGLE_DEFAULTS.port}`,
-        ZINGLE_DEFAULTS.basePath,
-        'services',
-        serviceId
-      )
+      const baseUrl = 'https://api.zingle.me:443/v1/services/abc123'
+      console.log(zingle.createRequestInstance())
       expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(baseUrl)
     })
@@ -93,10 +88,7 @@ describe('Zingle module', () => {
     it('should produce a request instance with port config override', () => {
       const port = 8000
       const zingle = new Zingle({ ...TEST_CONFIG, port })
-      const baseUrl = path.join(
-        `${ZINGLE_DEFAULTS.host}:${String(port)}`,
-        ZINGLE_DEFAULTS.basePath
-      )
+      const baseUrl = 'https://api.zingle.me:8000/v1'
       expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(baseUrl)
     })
@@ -158,6 +150,23 @@ describe('Zingle module', () => {
       const zingle = new Zingle(TEST_CONFIG)
       expect(zingle.username).to.not.exist
       expect(zingle.password).to.not.exist
+    })
+  })
+
+  describe('network calls', () => {
+    before(() => {
+      nock.enableNetConnect()
+    })
+    after(() => {
+      nock.disableNetConnect()
+    })
+
+    it('should list contacts', () => {
+      const username = process.env.ZINGLE_USERNAME || ''
+      const password = process.env.ZINGLE_PASSWORD || ''
+      const zingle = new Zingle({ username, password })
+
+      console.log(zingle.contacts.list())
     })
   })
 })

@@ -2,6 +2,8 @@
 import axios, { AxiosInstance } from 'axios'
 import Resources from './Resources'
 import Utils from './Utils'
+import Contacts from './resources/Contacts'
+import { resolve } from 'url'
 import path = require('path')
 
 export const ZINGLE_DEFAULTS = {
@@ -56,6 +58,9 @@ export default class Zingle {
   private _basePath: string
   private _serviceId: string|null
 
+  // declare resource inteent
+  public contacts: Contacts|undefined
+
   private attachResources (): void {
     for (const name in Resources) {
       (this as Record<string, any>)[Utils.pascalToCamelCase(name)] = new Resources[name](this)
@@ -74,13 +79,13 @@ export default class Zingle {
     basePath = basePath || this._basePath
     serviceId = serviceId || this._serviceId
 
-    return path.join(
-      `${host}:${String(port)}`,
-      basePath,
-      serviceId
-        ? `/services/${serviceId}`
-        : ''
-    )
+    const hostPath = `${host}:${port}`
+    // join path like a file location
+    const relativePath = path.join(basePath, serviceId ? `/services/${serviceId}` : '')
+    // resolve hostPath and relativePath using url.resolve (Node.js)
+    const fullUrl = resolve(hostPath, relativePath)
+
+    return fullUrl
   }
 
   public createRequestInstance (config: ZingleConfig): AxiosInstance {
