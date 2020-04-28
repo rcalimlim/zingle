@@ -125,7 +125,7 @@ const ZingleRequest = {
 
     // build req params
     const requestMethod = (spec.method || 'GET').toUpperCase() as ZingleMethodSpec['method']
-    const requestPath = resource.createFullPath(pathInterpolator, urlData)
+    const requestPath = resource.createPath(pathInterpolator, urlData)
     // build data object
     const data = encode({ ...argData, ...overrideData })
     // assign data to appropriate argument

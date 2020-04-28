@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-expressions */
 require('dotenv').config()
-const { expect } = require('chai')
+const chai = require('chai')
+const { expect } = chai
+const chaiAsPromised = require('chai-as-promised')
+chai.use(chaiAsPromised)
+
 const nock = require('nock')
 const Zingle = require('../lib/Zingle').default
 const Resources = require('../lib/Resources').default
 const Utils = require('../lib/Utils').default
-const path = require('path')
 
 // constants
 const { ZINGLE_DEFAULTS } = require('../lib/Zingle')
@@ -80,7 +83,6 @@ describe('Zingle module', () => {
       const serviceId = 'abc123'
       const zingle = new Zingle({ ...TEST_CONFIG, serviceId })
       const baseUrl = 'https://api.zingle.me:443/v1/services/abc123'
-      console.log(zingle.createRequestInstance())
       expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(baseUrl)
     })
@@ -161,12 +163,15 @@ describe('Zingle module', () => {
       nock.disableNetConnect()
     })
 
-    it('should list contacts', () => {
+    it('should list contacts', (done) => {
       const username = process.env.ZINGLE_USERNAME || ''
       const password = process.env.ZINGLE_PASSWORD || ''
       const zingle = new Zingle({ username, password })
 
-      console.log(zingle.contacts.list())
+      const result = zingle.contacts.list()
+      expect(result).to.eventually.haveOwnProperty('status')
+      expect(result).to.eventually.haveOwnProperty('result')
+        .notify(done)
     })
   })
 })

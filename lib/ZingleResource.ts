@@ -73,14 +73,13 @@ export default class ZingleResource {
    * @param {object} urlData - Hash object of URL data that should be subbed in for symbols
    * @returns {string} - ex. '/contacts/1234/tag/567'
    */
-  public createFullPath (
+  public createPath (
     pathInterpolator: Function,
     urlData: Record<string, string|number>
   ): string {
     return path
       .join(
         '/',
-        this.interpolators.basePath(urlData),
         this.interpolators.resourcePath(urlData),
         pathInterpolator(urlData)
       )

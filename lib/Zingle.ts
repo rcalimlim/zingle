@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import Resources from './Resources'
 import Utils from './Utils'
 import Contacts from './resources/Contacts'
@@ -100,7 +100,10 @@ export default class Zingle {
       }
     })
 
-    // TODO: add response interceptor
+    // strip axios fat from 2XX reponses and just return the Zingle data
+    configuredInstance.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
+      return response.data
+    })
 
     return configuredInstance
   }
