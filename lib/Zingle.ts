@@ -68,6 +68,12 @@ export default class Zingle {
     basePath = this._basePath,
     serviceId = this._serviceId
   ): string {
+    // default fallbacks
+    host = host || this._host
+    port = port || this._port
+    basePath = basePath || this._basePath
+    serviceId = serviceId || this._serviceId
+
     return path.join(
       `${host}:${String(port)}`,
       basePath,
@@ -77,15 +83,15 @@ export default class Zingle {
     )
   }
 
-  public createRequestInstance (): AxiosInstance {
-    const hasDefaultServiceId = !!this._serviceId
-    const baseURL = this.buildBaseUrl()
+  public createRequestInstance (config: ZingleConfig): AxiosInstance {
+    const { username, password, timeout, host, port, basePath, serviceId } = config || {}
+    const baseURL = this.buildBaseUrl(host, port, basePath, serviceId)
     const configuredInstance = axios.create({
       baseURL,
-      timeout: this._timeout,
+      timeout: timeout || this._timeout,
       auth: {
-        username: this._username,
-        password: this._password
+        username: username || this._username,
+        password: password || this._password
       }
     })
 

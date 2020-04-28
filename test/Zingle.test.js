@@ -73,7 +73,7 @@ describe('Zingle module', () => {
         .and.to.deep.equal({ username: TEST_CONFIG.username, password: TEST_CONFIG.password })
       expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(
-          path.join(`${ZINGLE_DEFAULTS.host}:${ZINGLE_DEFAULTS.port}`, ZINGLE_DEFAULTS.basePath)
+          zingle.buildBaseUrl()
         )
     })
 
@@ -106,7 +106,7 @@ describe('Zingle module', () => {
       const config = {
         username: 'fakeguy@email.com',
         password: 'fakepassword',
-        timout: 9999999,
+        timeout: 9999999,
         host: 'http://google.com',
         port: 123,
         basePath: 'v3',
@@ -117,7 +117,9 @@ describe('Zingle module', () => {
       expect(zingle.createRequestInstance(config).defaults).to.haveOwnProperty('timeout')
         .and.to.equal(config.timeout)
       expect(zingle.createRequestInstance(config).defaults).to.haveOwnProperty('baseURL')
-        .and.to.equal(zingle.buildBaseUrl())
+        .and
+        .to
+        .equal(zingle.buildBaseUrl(config.host, config.port, config.basePath, config.serviceId))
     })
   })
 
