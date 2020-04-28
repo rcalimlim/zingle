@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable no-unused-expressions */
 require('dotenv').config()
 const chai = require('chai')
@@ -155,7 +156,8 @@ describe('Zingle module', () => {
     })
   })
 
-  describe('network calls', () => {
+  // disabled because these are actual over the network calls
+  xdescribe('network calls', () => {
     before(() => {
       nock.enableNetConnect()
     })
@@ -163,7 +165,7 @@ describe('Zingle module', () => {
       nock.disableNetConnect()
     })
 
-    it('should list contacts', (done) => {
+    it('should list contacts without a config', (done) => {
       const username = process.env.ZINGLE_USERNAME || ''
       const password = process.env.ZINGLE_PASSWORD || ''
       const zingle = new Zingle({ username, password })
