@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import Resources from './Resources'
 import Utils from './Utils'
 import Contacts from './resources/Contacts'
-import { resolve } from 'url'
+import { URL } from 'url'
 import path = require('path')
 
 export const ZINGLE_DEFAULTS = {
@@ -31,7 +31,7 @@ export const ZINGLE_DEFAULTS = {
  */
 export default class Zingle {
   constructor (config: ZingleConfig) {
-    // username and password are required
+  // username and password are required
     if (!config || !config.username || !config.password) {
       throw new Error('Zingle: Config must be an object containing a username and password')
     }
@@ -58,7 +58,7 @@ export default class Zingle {
   private _basePath: string
   private _serviceId: string|null
 
-  // declare resource inteent
+  // declare resource intent
   public contacts: Contacts|undefined
 
   private attachResources (): void {
@@ -83,7 +83,7 @@ export default class Zingle {
     // join path like a file location
     const relativePath = path.join(basePath, serviceId ? `/services/${serviceId}` : '')
     // resolve hostPath and relativePath using url.resolve (Node.js)
-    const fullUrl = resolve(hostPath, relativePath)
+    const fullUrl = (new URL(relativePath, hostPath)).toString()
 
     return fullUrl
   }
