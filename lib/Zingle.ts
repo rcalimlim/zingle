@@ -79,13 +79,13 @@ export default class Zingle {
     basePath = basePath || this._basePath
     serviceId = serviceId || this._serviceId
 
-    const hostPath = `${host}:${port}`
     // join path like a file location
-    const relativePath = path.join(basePath, serviceId ? `/services/${serviceId}` : '')
+    const relativePath = path.join('/', basePath, serviceId ? `/services/${serviceId}` : '')
     // resolve hostPath and relativePath using url.resolve (Node.js)
-    const fullUrl = (new URL(relativePath, hostPath)).toString()
+    const url = new URL(relativePath, host)
+    url.port = port.toString()
 
-    return fullUrl
+    return url.toString()
   }
 
   public createRequestInstance (config: ZingleConfig): AxiosInstance {

@@ -83,7 +83,7 @@ describe('Zingle module', () => {
     it('should produce a request instance that includes default service id if specified', () => {
       const serviceId = 'abc123'
       const zingle = new Zingle({ ...TEST_CONFIG, serviceId })
-      const baseUrl = 'https://api.zingle.me:443/v1/services/abc123'
+      const baseUrl = 'https://api.zingle.me/v1/services/abc123'
       expect(zingle.createRequestInstance().defaults).to.haveOwnProperty('baseURL')
         .and.to.equal(baseUrl)
     })
